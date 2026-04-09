@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
 
 class AdminUserSeeder extends Seeder
 {
@@ -20,7 +21,9 @@ class AdminUserSeeder extends Seeder
             ]
         );
 
-        $admin->assignRole('admin');
+        // Keep this user as full-access account on every seed execution.
+        $admin->syncRoles(['admin']);
+        $admin->syncPermissions(Permission::all());
 
         // Demo doctor
         $doctor = User::firstOrCreate(

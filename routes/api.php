@@ -24,7 +24,7 @@ Route::get('/health', HealthController::class)->name('health');
 Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('auth.legacy.login');
 
-    Route::middleware('jwt.auth')->group(function () {
+    Route::middleware('jwt.guard')->group(function () {
         Route::post('/logout',  [AuthController::class, 'logout'])->name('auth.legacy.logout');
         Route::post('/refresh', [AuthController::class, 'refresh'])->name('auth.legacy.refresh');
         Route::get('/me',       [AuthController::class, 'me'])->name('auth.legacy.me');
@@ -40,7 +40,7 @@ Route::prefix('v1')->group(function () {
     });
 
     // ── Protected routes ──────────────────────────────────────────────────
-    Route::middleware('jwt.auth')->group(function () {
+    Route::middleware('jwt.guard')->group(function () {
 
         // Auth
         Route::prefix('auth')->group(function () {
