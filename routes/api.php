@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ConsultationController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\MedicalRecordController;
@@ -49,6 +50,11 @@ Route::prefix('v1')->group(function () {
             Route::get('/me',       [AuthController::class, 'me'])->name('auth.me');
         });
 
+        // Dashboard
+        Route::prefix('dashboard')->group(function () {
+            Route::get('/kpis', [DashboardController::class, 'kpis'])->name('dashboard.kpis');
+        });
+
         // Users
         Route::prefix('users')->group(function () {
             Route::get('/',                    [UserController::class, 'index'])->name('users.index');
@@ -64,6 +70,7 @@ Route::prefix('v1')->group(function () {
 
         // Medical Records
         Route::prefix('medical-records')->group(function () {
+            Route::get('/',                      [MedicalRecordController::class, 'index'])->name('medical-records.index');
             Route::get('/{medicalRecord}',        [MedicalRecordController::class, 'show'])->name('medical-records.show');
             Route::put('/{medicalRecord}',         [MedicalRecordController::class, 'update'])->name('medical-records.update');
         });

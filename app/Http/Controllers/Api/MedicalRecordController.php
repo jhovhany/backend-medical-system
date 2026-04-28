@@ -8,9 +8,22 @@ use App\Http\Resources\MedicalRecordResource;
 use App\Models\MedicalRecord;
 use App\Models\Patient;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class MedicalRecordController extends Controller
 {
+    public function index(): AnonymousResourceCollection
+    {
+        $this->authorize('viewAny', MedicalRecord::class);
+
+        $records = MedicalRecord::query()
+            ->with(['patient'])
+            ->orderByDesc('updated_at')
+            ->paginate(request()->integer('per_page', 15));
+
+        return MedicalRecordResource::collection($records);
+    }
+
     public function showByPatient(Patient $patient): JsonResponse
     {
         $this->authorize('view', $patient);

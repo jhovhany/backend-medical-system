@@ -10,6 +10,11 @@ class MedicalRecordPolicy
 {
     use HandlesAuthorization;
 
+    public function viewAny(User $user): bool
+    {
+        return $user->hasAnyRole(['admin', 'doctor', 'receptionist']);
+    }
+
     public function view(User $user, MedicalRecord $medicalRecord): bool
     {
         return $user->hasAnyRole(['admin', 'doctor', 'receptionist']);
